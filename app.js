@@ -9,6 +9,7 @@ const app = express();
 
 const Thing = require('./models/Thing');
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 
 
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/stuff', stuffRoutes);
+app.use('/api/auth', userRoutes);
 
 
 
