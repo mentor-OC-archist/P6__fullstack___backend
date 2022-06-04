@@ -1,4 +1,6 @@
+const fs = require('fs');
 const Thing = require('../models/Thing');
+
 
 exports.createThing = (req, res, next) => {
   const thingObject = JSON.parse(req.body.thing)
@@ -92,19 +94,23 @@ exports.deleteThing = (req, res, next) => {
             }
             else{
                 console.log("oh heyn its good, it did match!\nthing.userId: "+thing.userId+" --- req.auth.userId: "+req.auth.userId);
-                Thing.deleteOne({ _id: req.params.id }).then(
-                    () => {
-                        res.status(200).json({
-                            message: 'Deleted!'
-                        });
-                    }
-                ).catch(
-                    (error) => {
-                        res.status(400).json({
-                            error: error
-                        });
-                    }
-                );
+                const filename = thing.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                  Thing.deleteOne({ _id: req.params.id })
+                    .then(
+                        () => {
+                            res.status(200).json({
+                                message: 'Deleted!'
+                            });
+                        }
+                    ).catch(
+                        (error) => {
+                            res.status(400).json({
+                                error: error
+                            });
+                        }
+                    );
+                })
             }
         }
     )
