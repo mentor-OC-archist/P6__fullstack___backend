@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 
 
 
@@ -25,6 +26,7 @@ mongoose.connect('mongodb+srv://archist:1&Bigcyri@cluster0.61na4.mongodb.net/?re
 
 
 app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, 'images')))
 
 //CORS
 app.use((req, res, next) => {

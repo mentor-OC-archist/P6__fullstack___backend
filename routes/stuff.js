@@ -3,6 +3,8 @@ const router = express.Router();
 
 const stuffCtrl = require('../controllers/stuff');
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
+// const multer = require('../middleware/multer-config_');
 
 // router.use((req,res,next)=>{
 //     const token = req.headers.authorization.split(' ')[1];
@@ -11,10 +13,14 @@ const auth = require('../middleware/auth');
 //     req.auth = {userId}
 // })
 
-router.post('/', auth, stuffCtrl.createThing);
-router.put('/:id', auth, stuffCtrl.modifyThing);
+router.post('/', multer, stuffCtrl.createThing);
+router.put('/:id', auth, multer, stuffCtrl.modifyThing);
 router.delete('/:id', auth, stuffCtrl.deleteThing);
 router.get('/:id', auth, stuffCtrl.getOneThing);
 router.get('/', auth, stuffCtrl.getAllStuff);
+
+
+router.post('/ok', auth, multer, stuffCtrl.createThing);
+
 
 module.exports = router;
