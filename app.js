@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-const Thing = require('./models/Thing');
+const Product = require('./models/Product');
 
 
 
@@ -33,37 +33,51 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/api/stuff', (req, res, next) => {
-    delete req.body._id;
-    const thing = new Thing({
-      ...req.body
-    });
-    thing.save()
-      .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+
+
+// RÉCUPÉRER TOUS LES PRODUITS
+app.get('/api/products', (req, res, next) => {
+  console.log("GET ALL");
+  Product.find()
+      .then(products => res.status(200).json({products}))
       .catch(error => res.status(400).json({ error }));
 });
-
-app.get('/api/stuff', (req, res, next) => {
-    Thing.find()
-        .then(things => res.status(200).json(things))
+// RÉCUPÉRER UN SEUL PRODUIT
+app.get('/api/products/:id', (req, res, next) => {
+  console.log("GET ONE");
+  console.log(req.params);
+  Product.findOne({ _id: req.params.id })
+        .then(product => res.status(200).json({product}))
         .catch(error => res.status(400).json({ error }));
 });
-
-app.get('/api/stuff/:id', (req, res, next) => {
-    Thing.findOne({ _id: req.params.id })
-        .then(thing => res.status(200).json(thing))
-        .catch(error => res.status(404).json({ error }));
+// ENREGISTRER UN NOUVEAU PRODUITS
+app.post('/api/products', (req, res, next) => {
+  console.log("POST");
+  console.log(req.body);
+  const product = new Product({
+    ...req.body
+  });
+  product.save()
+    .then(response => {
+      console.log(response);
+      return res.status(201).json({ product })
+    })
+    .catch(error => res.status(400).json({ error }));
+});
+// MODIFIER UN PRODUIT EXISTANT
+app.put('/api/products/:id', (req, res, next) => {
+  console.log("PUT");
+  console.log(req.body)
+  Product.updateOne({ _id: req.params.id }, { ...req.body })
+    .then(() => res.status(200).json({ message: 'Modified!'}))
+    .catch(error => res.status(400).json({ error }));
 });
 
-app.put('/api/stuff/:id', (req, res, next) => {
-    Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-      .catch(error => res.status(400).json({ error }));
-});
-
-app.delete('/api/stuff/:id', (req, res, next) => {
-    Thing.deleteOne({ _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+// SUPPRIMER UN PRODUIT EXISTANT
+app.delete('/api/products/:id', (req, res, next) => {
+  console.log("DELETE");
+    Product.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Deleted!'}))
       .catch(error => res.status(400).json({ error }));
 });
 
