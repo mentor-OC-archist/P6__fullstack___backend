@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+console.log("model stuff");
+
+
 const thingSchema = mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },

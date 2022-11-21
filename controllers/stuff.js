@@ -1,6 +1,8 @@
 const fs = require('fs');
 const Thing = require('../models/Thing');
 
+console.log("controller stuff");
+
 
 exports.createThing = (req, res, next) => {
   const thingObject = JSON.parse(req.body.thing)
@@ -117,6 +119,7 @@ exports.deleteThing = (req, res, next) => {
 };
 
 exports.getAllStuff = (req, res, next) => {
+  console.log("all stuff");
   Thing.find().then(
     (things) => {
       res.status(200).json(things);

@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require("dotenv");
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 dotenv.config();
 
@@ -11,14 +13,11 @@ dotenv.config();
 
 const app = express();
 
-const stuffRoutes = require('./routes/stuff');
-const userRoutes = require('./routes/user');
 
 
 
 
-
-mongoose.connect('mongodb+srv://archist:'+process.env.PWD+'@cluster0.61na4.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://archist:'+process.env.PASS+'@cluster0.61na4.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -26,6 +25,7 @@ mongoose.connect('mongodb+srv://archist:'+process.env.PWD+'@cluster0.61na4.mongo
 
 
 
+  console.log("express app.js");
 
 
 app.use(express.json());

@@ -35,6 +35,8 @@ const errorHandler = error => {
   }
 };
 
+console.log("server");
+
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
